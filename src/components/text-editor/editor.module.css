@@ -117,13 +117,20 @@
 
 /* Destructive item in block settings menu */
 .root :global(.ce-settings__button--delete) {
-  color: var(--destructive);
-  background: color-mix(in oklab, var(--destructive) 14%, var(--card));
+  background: var(--destructive);
+  color: var(--primary-foreground);
 }
 
-.root :global(.ce-settings__button--delete:hover) {
-  background: color-mix(in oklab, var(--destructive) 22%, var(--card));
-  color: var(--destructive);
+/* Hover: slightly deeper red, but only when enabled */
+.root :global(.ce-settings__button--delete:not(:disabled):hover) {
+  background: color-mix(in oklab, var(--destructive) 80%, black);
+  color: var(--primary-foreground);
+}
+
+/* Disabled state: match Editor.js default but with theme-aware text */
+.root :global(.ce-settings__button--delete:disabled) {
+  background: transparent;
+  color: var(--muted-foreground);
 }
 
 /* Inputs inside popovers */
@@ -140,8 +147,8 @@
   gap: 0.25rem;
   padding: 0.2rem 0.55rem;
   border-radius: var(--radius);
-  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
-  background: var(--card);
+  border: 1px solid var(--border);
+  background: var(--muted);
 }
 
 .root :global(.cdx-search-field__icon) {

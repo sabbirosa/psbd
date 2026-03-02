@@ -1,4 +1,4 @@
-import { TextEditor } from "@/components/text-editor";
+import Editor from "@/components/shared/Editor";
 
 export default function TextEditorPage() {
   return (
@@ -18,7 +18,9 @@ export default function TextEditorPage() {
           </p>
         </div>
 
-        <TextEditor className="min-h-[320px]" />
+        <div className="h-[480px]">
+          <Editor />
+        </div>
       </main>
     </div>
   );

@@ -33,6 +33,9 @@ export function TextEditor({
 }: TextEditorProps) {
   const holderRef = React.useRef<HTMLDivElement | null>(null);
   const editorRef = React.useRef<EditorJS | null>(null);
+  const keyHandlerRef = React.useRef<((event: KeyboardEvent) => void) | null>(
+    null,
+  );
 
   const onChangeRef = React.useRef<TextEditorProps["onChange"]>(onChange);
   React.useEffect(() => {
@@ -46,6 +49,7 @@ export function TextEditor({
     if (!holderRef.current) return;
 
     let cancelled = false;
+    let instance: EditorJS | null = null;
 
     async function init() {
       const [{ default: Editor }, { default: Header }, { default: List }] =
@@ -184,6 +188,63 @@ export function TextEditor({
         },
       });
 
+      // Custom keyboard behaviour: mimic Notion-like empty-block handling.
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key !== "Enter" || event.shiftKey || event.isComposing) {
+          return;
+        }
+
+        const api = editor as unknown as {
+          blocks?: {
+            getCurrentBlockIndex: () => number;
+            getBlocksCount: () => number;
+            getBlockByIndex: (index: number) => { holder?: HTMLElement } | null;
+            delete: (index: number) => void;
+          };
+          caret?: {
+            setToBlock: (index: number, position?: "end" | "start") => void;
+          };
+        };
+
+        if (!api.blocks) return;
+
+        const index = api.blocks.getCurrentBlockIndex();
+        const block = api.blocks.getBlockByIndex(index);
+        const holder = block?.holder;
+
+        if (!holder) return;
+
+        const text = holder.innerText.replace(/\u200B/g, "").trim();
+
+        // If there is content, let Editor.js handle Enter normally
+        if (text.length > 0) return;
+
+        event.preventDefault();
+
+        const total = api.blocks.getBlocksCount();
+
+        // If this is an extra empty block, remove it and move caret to previous
+        if (total > 1) {
+          api.blocks.delete(index);
+          if (api.caret) {
+            const target = Math.max(0, index - 1);
+            try {
+              api.caret.setToBlock(target, "end");
+            } catch {
+              // ignore caret errors
+            }
+          }
+        }
+      };
+
+      (editor as any).listeners?.on?.(
+        holderRef.current,
+        "keydown",
+        handleKeyDown as any,
+      );
+
+      keyHandlerRef.current = handleKeyDown;
+      instance = editor;
       editorRef.current = editor;
     }
 
@@ -191,6 +252,13 @@ export function TextEditor({
 
     return () => {
       cancelled = true;
+      if (instance && keyHandlerRef.current && holderRef.current) {
+        (instance as any).listeners?.off?.(
+          holderRef.current,
+          "keydown",
+          keyHandlerRef.current as any,
+        );
+      }
       if (saveTimeoutRef.current) {
         window.clearTimeout(saveTimeoutRef.current);
         saveTimeoutRef.current = null;
@@ -224,12 +292,15 @@ export function TextEditor({
   return (
     <div
       className={cn(
-        "rounded-lg border bg-background text-foreground shadow-sm",
+        "flex min-h-[240px] rounded-lg border bg-background text-foreground shadow-sm",
         styles.root,
         className,
       )}
     >
-      <div ref={holderRef} className="min-h-[240px] px-3 py-2" />
+      <div
+        ref={holderRef}
+        className="min-h-[240px] flex-1 overflow-y-auto px-3 py-2"
+      />
     </div>
   );
 }
