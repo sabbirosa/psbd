@@ -1,0 +1,213 @@
+.root {
+  /* Provide spacing for Editor.js floating toolbar */
+  --editorjs-toolbar-offset: 0.75rem;
+  font-family: inherit;
+}
+
+/* Root wrapper that Editor.js attaches to */
+.root :global(.ce-editorjs) {
+  padding-block: 0.75rem 1.25rem;
+}
+
+/* Base typography/colors inside the editor */
+.root :global(.ce-paragraph),
+.root :global(.cdx-block),
+.root :global(.ce-header) {
+  color: var(--foreground);
+  line-height: 1.6;
+}
+
+/* Block spacing */
+.root :global(.ce-block__content) {
+  max-width: 100%;
+  padding-block: 0.25rem;
+}
+
+.root :global(.ce-block--focused) .ce-block__content {
+  background: color-mix(in oklab, var(--muted) 40%, transparent);
+}
+
+/* Inline code + marker */
+.root :global(.cdx-inline-code) {
+  background: color-mix(in oklab, var(--muted) 70%, transparent);
+  color: var(--foreground);
+  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  border-radius: 0.375rem;
+  padding: 0.1rem 0.35rem;
+}
+
+.root :global(mark) {
+  background: color-mix(in oklab, var(--accent) 70%, transparent);
+  color: var(--accent-foreground);
+  border-radius: 0.25rem;
+  padding: 0.05rem 0.2rem;
+}
+
+/* Headers */
+.root :global(.ce-header) {
+  font-weight: 600;
+}
+
+.root :global(.ce-header.ce-header--h2) {
+  font-size: 1.25rem;
+}
+
+.root :global(.ce-header.ce-header--h3) {
+  font-size: 1.125rem;
+}
+
+.root :global(.ce-header.ce-header--h4) {
+  font-size: 1rem;
+}
+
+/* Quote tool */
+.root :global(.cdx-quote) {
+  border-left: 3px solid var(--border);
+  padding-left: 0.75rem;
+  margin-block: 0.5rem;
+}
+
+/* Toolbar buttons */
+.root :global(.ce-toolbar__actions),
+.root :global(.ce-toolbar__content) {
+  max-width: 100%;
+}
+
+.root :global(.ce-toolbar__plus),
+.root :global(.ce-toolbar__settings-btn) {
+  color: var(--muted-foreground);
+}
+
+.root :global(.ce-toolbar__plus) {
+  margin-left: var(--editorjs-toolbar-offset);
+}
+
+.root :global(.ce-toolbar__plus:hover),
+.root :global(.ce-toolbar__settings-btn:hover) {
+  background: color-mix(in oklab, var(--muted) 70%, transparent);
+  color: var(--foreground);
+}
+
+/* Popovers / toolboxes */
+.root :global(.ce-popover),
+.root :global(.ce-inline-toolbar),
+.root :global(.ce-conversion-toolbar),
+.root :global(.ce-settings) {
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.root :global(.ce-popover__container) {
+  padding: 0.4rem 0.4rem 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.root :global(.ce-popover-item__icon) {
+  color: var(--muted-foreground);
+}
+
+.root :global(.ce-popover-item:hover),
+.root :global(.ce-conversion-tool:hover),
+.root :global(.ce-settings__button:hover) {
+  background: color-mix(in oklab, var(--muted) 70%, transparent);
+}
+
+/* Destructive item in block settings menu */
+.root :global(.ce-settings__button--delete) {
+  color: var(--destructive);
+  background: color-mix(in oklab, var(--destructive) 14%, var(--card));
+}
+
+.root :global(.ce-settings__button--delete:hover) {
+  background: color-mix(in oklab, var(--destructive) 22%, var(--card));
+  color: var(--destructive);
+}
+
+/* Inputs inside popovers */
+.root :global(.ce-popover__search) {
+  padding: 0.25rem 0.3rem 0.4rem;
+  border: none;
+  background: transparent;
+}
+
+/* Search field wrapper (Filter) */
+.root :global(.cdx-search-field) {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  background: var(--card);
+}
+
+.root :global(.cdx-search-field__icon) {
+  display: flex;
+  margin-right: 0.05rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground);
+}
+
+.root :global(.cdx-search-field__input) {
+  flex: 1 1 auto;
+  background: transparent;
+  color: var(--foreground);
+  border: none;
+  outline: none;
+  padding: 0.1rem 0;
+  font-size: 0.875rem;
+}
+
+.root :global(.ce-inline-toolbar__input) {
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.6rem;
+  font-size: 0.875rem;
+}
+
+/* Simple image / Image tool */
+.root :global(.cdx-simple-image),
+.root :global(.ce-block[data-tool="image"]) {
+  text-align: center;
+}
+
+.root :global(.cdx-simple-image img),
+.root :global(.image-tool__image-picture) img,
+.root :global(.image-tool__image-picture) {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+/* Raw HTML */
+.root :global(.ce-block[data-tool="raw"] textarea),
+.root :global(.cdx-rawtool__textarea) {
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.875rem;
+}
+
+/* Checklist alignment tweaks */
+.root :global(.cdx-checklist__item) {
+  align-items: flex-start;
+}
+
+/* Link tool preview */
+.root :global(.cdx-link-tool__content) {
+  border-radius: 0.75rem;
+  border-color: var(--border);
+  background: var(--card);
+}
+
+/* Embed tool iframe responsiveness */
+.root :global(.cdx-embed) iframe {
+  border-radius: 0.75rem;
+  max-width: 100%;
+}

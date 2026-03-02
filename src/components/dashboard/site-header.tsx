@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { IconLogout } from "@tabler/icons-react";
+import { ThemeToggleButton } from "../shared/theme-toggle-button";
 
 export function SiteHeader() {
   return (
@@ -13,15 +15,17 @@ export function SiteHeader() {
         />
         <h1 className="text-base font-medium">Documents</h1>
         <div className="ml-auto flex items-center gap-2">
-          <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
-            <a
-              href="https://github.com/shadcn-ui/ui/tree/main/apps/v4/app/(examples)/dashboard"
-              rel="noopener noreferrer"
-              target="_blank"
-              className="dark:text-foreground"
-            >
-              GitHub
-            </a>
+          <ThemeToggleButton
+            variant="ghost"
+            className="focus-visible:ring-0 size-8"
+          />
+          <Button
+            variant="ghost"
+            size="sm"
+            className="hidden gap-2 sm:inline-flex"
+          >
+            <span>Logout</span>
+            <IconLogout stroke={2} className="size-4" />
           </Button>
         </div>
       </div>

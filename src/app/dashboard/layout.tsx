@@ -1,7 +1,9 @@
+import CommonProvider from "@/components/shared/common-provider";
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <CommonProvider>{children}</CommonProvider>;
 }
